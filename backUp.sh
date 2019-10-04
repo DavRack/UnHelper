@@ -13,12 +13,20 @@ backUp(){ #original, destino
     rsync -avP $1 $2
 }
 netBackUp(){
-    argumento="$rutaOrigen $nombreUsuario@$prefijoIp$sufijoIpUsual:$rutaDestinoNet"
+    echo $1
+    if [ -z $1 ]; then
+        argumento="$rutaOrigen $nombreUsuario@$prefijoIp$sufijoIpUsual:$rutaDestinoNet"
+    else
+        argumento="$rutaOrigen $nombreUsuario@$prefijoIp$1:$rutaDestinoNet"
+    fi
     rsync -avp $argumento
 }
-
 if [ $# == 0 ]; then
     backUp $rutaOrigen $rutaBackUp
 elif [ $1 == "-n" ]; then
-    netBackUp 
+    if [ -z $2 ]; then
+        netBackUp 
+    else
+        netBackUp $2
+    fi
 fi 
